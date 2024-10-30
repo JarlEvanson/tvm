@@ -1,6 +1,10 @@
 [workspace]
 resolver = "2"
-members = []
+members = [
+    "loader/loader",
+    "loader/architectures/x86_64",
+    "loader/systems/x86_64-uefi",
+]
 
 [workspace.package]
 authors = [ "Jarl Evanson <evanson.jarl@gmail.com>" ]
@@ -9,6 +13,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
+loader = { path = "loader/loader" }
+
+loader-x86_64 = { path = "loader/architectures/x86_64" }
 
 [workspace.lints.rust]
 # Safety lints
