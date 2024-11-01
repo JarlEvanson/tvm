@@ -3,6 +3,10 @@
 version = 4
 
 [[package]]
+name = "limine"
+version = "0.1.0"
+
+[[package]]
 name = "tvm"
 version = "0.1.0"
 

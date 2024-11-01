@@ -6,6 +6,7 @@ members = [
     "loader/architectures/aarch64",
     "loader/architectures/x86_64",
 
+    "loader/systems/limine",
     "loader/systems/aarch64-limine",
     "loader/systems/x86_64-limine",
 
@@ -25,6 +26,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
+limine = { path = "loader/systems/limine" }
 
 [workspace.lints.rust]
 # Safety lints
