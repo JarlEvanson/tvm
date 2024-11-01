@@ -7,6 +7,17 @@ use core::cell::UnsafeCell;
 /// The base revision of the `limine` protocol.
 pub const BASE_REVISION: u64 = 3;
 
+/// Marks the start of the requests section.
+pub const REQUESTS_START_MARKER: [u64; 4] = [
+    0xf6b8f4b39de7d1ae,
+    0xfab91a6940fcb9cf,
+    0x785c6ed015d3e316,
+    0x181e920a7852b9d9,
+];
+
+/// Marks the end of the requests section.
+pub const REQUESTS_END_MARKER: [u64; 2] = [0xadc0e0531bb10d03, 0x9572709f31764c62];
+
 /// A tag setting the base revision supported by the application.
 #[repr(C)]
 pub struct BaseRevisionTag {
