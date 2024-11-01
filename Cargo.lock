@@ -37,6 +37,9 @@ version = "0.1.0"
 [[package]]
 name = "tvm-loader-x86_64-limine"
 version = "0.1.0"
+dependencies = [
+ "limine",
+]
 
 [[package]]
 name = "tvm-x86_64"
