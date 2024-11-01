@@ -1,6 +1,14 @@
 [workspace]
 resolver = "2"
 members = [
+    "loader/loader",
+
+    "loader/architectures/aarch64",
+    "loader/architectures/x86_64",
+
+    "loader/systems/aarch64-limine",
+    "loader/systems/x86_64-limine",
+
     "tvm/tvm",
 
     "tvm/architectures/aarch64",
