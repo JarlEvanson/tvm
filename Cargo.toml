@@ -1,6 +1,14 @@
 [workspace]
 resolver = "2"
-members = []
+members = [
+    "tvm/tvm",
+
+    "tvm/architectures/aarch64",
+    "tvm/architectures/x86_64",
+
+    "tvm/systems/aarch64-virt",
+    "tvm/systems/x86_64-pc",
+]
 
 [workspace.package]
 authors = [ "Jarl Evanson <evanson.jarl@gmail.com>" ]
