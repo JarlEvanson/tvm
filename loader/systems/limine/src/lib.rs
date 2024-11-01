@@ -4,6 +4,7 @@
 
 use core::cell::UnsafeCell;
 
+pub mod framebuffer;
 pub mod memory_map;
 
 /// The base revision of the `limine` protocol.
