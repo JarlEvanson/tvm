@@ -4,6 +4,8 @@
 
 use core::cell::UnsafeCell;
 
+pub mod memory_map;
+
 /// The base revision of the `limine` protocol.
 pub const BASE_REVISION: u64 = 3;
 
