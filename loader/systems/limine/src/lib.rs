@@ -18,6 +18,9 @@ pub const REQUESTS_START_MARKER: [u64; 4] = [
 /// Marks the end of the requests section.
 pub const REQUESTS_END_MARKER: [u64; 2] = [0xadc0e0531bb10d03, 0x9572709f31764c62];
 
+const COMMON_MAGIC_0: u64 = 0xc7b1dd30df4c8b88;
+const COMMON_MAGIC_1: u64 = 0x0a82e883a194f07b;
+
 /// A tag setting the base revision supported by the application.
 #[repr(C)]
 pub struct BaseRevisionTag {
@@ -53,3 +56,82 @@ impl BaseRevisionTag {
 
 unsafe impl Sync for BaseRevisionTag {}
 unsafe impl Send for BaseRevisionTag {}
+
+/// The base structure of a `limine` feature's request.
+#[repr(C)]
+pub struct Request<R: FeatureRequest> {
+    id: [u64; 4],
+    revision: UnsafeCell<u64>,
+    response: UnsafeCell<*mut Response<R::Response>>,
+    body: R,
+}
+
+impl<R: FeatureRequest> Request<R> {
+    /// Creates a new [`Request`] to carry out.
+    pub const fn new(body: R) -> Self {
+        Self {
+            id: R::ID,
+            revision: UnsafeCell::new(R::REVISION),
+            response: UnsafeCell::new(core::ptr::null_mut()),
+            body,
+        }
+    }
+
+    /// Returns the [`Response<R::Response>`] if the request is supported.
+    ///
+    /// Otherwise, returns `None`.
+    pub fn response(&self) -> Option<&Response<R::Response>> {
+        let ptr = unsafe { self.response.get().read_volatile() };
+        unsafe { ptr.as_ref() }
+    }
+}
+
+unsafe impl<R: FeatureRequest> Sync for Request<R> {}
+unsafe impl<R: FeatureRequest> Send for Request<R> {}
+
+/// The base structure of a `limine` feature's response.
+#[repr(C)]
+pub struct Response<R: FeatureResponse> {
+    revision: u64,
+    body: R,
+}
+
+impl<R: FeatureResponse> Response<R> {
+    /// Returns the body of this [`Response`] if the revision is supported.
+    ///
+    /// Otherwise, returns `None`.
+    pub fn body(&self) -> Option<&R> {
+        if !self.is_supported() {
+            return None;
+        }
+
+        Some(&self.body)
+    }
+
+    /// Returns `true` if the revision of this [`Response`] is supported.
+    pub fn is_supported(&self) -> bool {
+        self.revision() >= R::REVISION
+    }
+
+    /// Returns the revision of this [`Response`].
+    pub fn revision(&self) -> u64 {
+        self.revision
+    }
+}
+
+/// Describes the request structure of a `limine` feature.
+pub trait FeatureRequest {
+    /// The ID used to indicate the feature with which this request is associated.
+    const ID: [u64; 4];
+    /// The revision of the feature's request.
+    const REVISION: u64;
+
+    /// The type of the response.
+    type Response: FeatureResponse;
+}
+
+/// Describes the response structure of a `limine` feature.
+pub trait FeatureResponse {
+    /// The revision of the feature's response.
+    const REVISION: u64;
+}
