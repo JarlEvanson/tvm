@@ -4,6 +4,7 @@ use core::mem;
 
 use crate::elf::{
     class::{ClassParse, ClassParseBase, UnsupportedClassError},
+    dynamic::{ClassParseDynamic, ConstDynamicTag, DynamicTag},
     encoding::EncodingParse,
     header::{ClassParseElfHeader, ElfType, Machine},
     ident::{Class, DefElfIdent},
@@ -148,6 +149,31 @@ pub(crate) struct Elf64ProgramHeader {
     pub file_size: u64,
     pub memory_size: u64,
     pub alignment: u64,
+}
+
+impl ClassParseDynamic for Class64 {
+    fn dynamic_tag_eq(tag: DynamicTag<Self>, const_tag: ConstDynamicTag) -> bool {
+        tag.0 == const_tag.0 as i64
+    }
+
+    fn dynamic_tag_offset(self) -> usize {
+        mem::offset_of!(Elf64Dynamic, tag)
+    }
+
+    fn dynamic_value_offset(self) -> usize {
+        mem::offset_of!(Elf64Dynamic, value)
+    }
+
+    fn expected_dynamic_size(self) -> usize {
+        mem::size_of::<Elf64Dynamic>()
+    }
+}
+
+#[repr(C)]
+#[expect(clippy::missing_docs_in_private_items)]
+pub(crate) struct Elf64Dynamic {
+    pub tag: i64,
+    pub value: u64,
 }
 
 impl ClassParseBase for Class64 {

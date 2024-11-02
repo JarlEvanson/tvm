@@ -8,6 +8,7 @@ use header::{ElfHeader, ParseElfHeaderError, ValidateElfHeaderSpecError};
 use program_header::{ProgramHeader, ProgramHeaderTable, ValidateProgramHeaderSpecError};
 
 pub mod class;
+pub mod dynamic;
 pub mod encoding;
 pub mod header;
 pub mod ident;

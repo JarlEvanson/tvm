@@ -3,7 +3,7 @@
 use core::{error, fmt};
 
 use crate::elf::{
-    encoding::EncodingParse, header::ClassParseElfHeader, ident::Class,
+    dynamic::ClassParseDynamic, encoding::EncodingParse, header::ClassParseElfHeader, ident::Class,
     program_header::ClassParseProgramHeader,
 };
 
@@ -20,7 +20,10 @@ pub use merge::*;
 pub type AnyClass = Merge<Class32, Class64>;
 
 /// A combination of all other class parsing traits.
-pub trait ClassParse: ClassParseElfHeader + ClassParseProgramHeader + ClassParseBase {}
+pub trait ClassParse:
+    ClassParseElfHeader + ClassParseProgramHeader + ClassParseDynamic + ClassParseBase
+{
+}
 
 /// The base definitions of a class aware parser.
 pub trait ClassParseBase: Clone + Copy {
@@ -38,7 +41,7 @@ pub trait ClassParseBase: Clone + Copy {
         + core::ops::Div<Output = Self::ClassUsize>
         + core::ops::Rem<Output = Self::ClassUsize>;
     /// A signed class sized integer.
-    type ClassIsize: fmt::Debug + fmt::Display;
+    type ClassIsize: Clone + Copy + fmt::Debug + fmt::Display + Eq + Ord;
 
     /// Returns the [`ClassParseBase`] instance that corresponds with the given [`Class`].
     ///
