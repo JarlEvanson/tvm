@@ -7,6 +7,7 @@ use crate::elf::{
     encoding::EncodingParse,
     header::{ClassParseElfHeader, ElfType, Machine},
     ident::{Class, DefElfIdent},
+    program_header::{ClassParseProgramHeader, SegmentFlags, SegmentType},
 };
 
 /// A zero-sized object offering methods to safely parse 32-bit ELF files.
@@ -96,6 +97,57 @@ pub(crate) struct Elf32Header {
     pub section_header_count: u16,
 
     pub section_header_string_table_index: u16,
+}
+
+impl ClassParseProgramHeader for Class32 {
+    fn segment_type_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, segment_type)
+    }
+
+    fn segment_flags_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, flags)
+    }
+
+    fn segment_file_offset_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, file_offset)
+    }
+
+    fn segment_file_size_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, file_size)
+    }
+
+    fn segment_virtual_address_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, virtual_address)
+    }
+
+    fn segment_physical_address_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, physical_address)
+    }
+
+    fn segment_memory_size_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, memory_size)
+    }
+
+    fn segment_alignment_offset(self) -> usize {
+        mem::offset_of!(Elf32ProgramHeader, alignment)
+    }
+
+    fn expected_program_header_size(self) -> usize {
+        mem::size_of::<Elf32ProgramHeader>()
+    }
+}
+
+#[repr(C)]
+#[expect(clippy::missing_docs_in_private_items)]
+pub(crate) struct Elf32ProgramHeader {
+    pub segment_type: SegmentType,
+    pub file_offset: u32,
+    pub virtual_address: u32,
+    pub physical_address: u32,
+    pub file_size: u32,
+    pub memory_size: u32,
+    pub flags: SegmentFlags,
+    pub alignment: u32,
 }
 
 impl ClassParseBase for Class32 {

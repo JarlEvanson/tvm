@@ -5,6 +5,7 @@ use crate::elf::{
     encoding::EncodingParse,
     header::ClassParseElfHeader,
     ident::Class,
+    program_header::ClassParseProgramHeader,
 };
 
 /// An object used to dispatch the [`ClassParse`] to the two underlying [`ClassParse`]
@@ -124,6 +125,75 @@ where
         match self {
             Self::A(a) => a.expected_elf_header_size(),
             Self::B(b) => b.expected_elf_header_size(),
+        }
+    }
+}
+
+impl<A: ClassParse, B: ClassParse> ClassParseProgramHeader for Merge<A, B>
+where
+    B::ClassUsize: From<A::ClassUsize>,
+    B::ClassIsize: From<A::ClassIsize>,
+{
+    fn segment_type_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_type_offset(),
+            Self::B(b) => b.segment_type_offset(),
+        }
+    }
+
+    fn segment_flags_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_flags_offset(),
+            Self::B(b) => b.segment_flags_offset(),
+        }
+    }
+
+    fn segment_file_offset_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_file_offset_offset(),
+            Self::B(b) => b.segment_file_offset_offset(),
+        }
+    }
+
+    fn segment_file_size_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_file_size_offset(),
+            Self::B(b) => b.segment_file_size_offset(),
+        }
+    }
+
+    fn segment_virtual_address_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_virtual_address_offset(),
+            Self::B(b) => b.segment_virtual_address_offset(),
+        }
+    }
+
+    fn segment_physical_address_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_physical_address_offset(),
+            Self::B(b) => b.segment_physical_address_offset(),
+        }
+    }
+
+    fn segment_memory_size_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_memory_size_offset(),
+            Self::B(b) => b.segment_memory_size_offset(),
+        }
+    }
+
+    fn segment_alignment_offset(self) -> usize {
+        match self {
+            Self::A(a) => a.segment_alignment_offset(),
+            Self::B(b) => b.segment_alignment_offset(),
+        }
+    }
+
+    fn expected_program_header_size(self) -> usize {
+        match self {
+            Self::A(a) => a.expected_program_header_size(),
+            Self::B(b) => b.expected_program_header_size(),
         }
     }
 }

@@ -2,7 +2,10 @@
 
 use core::{error, fmt};
 
-use crate::elf::{encoding::EncodingParse, header::ClassParseElfHeader, ident::Class};
+use crate::elf::{
+    encoding::EncodingParse, header::ClassParseElfHeader, ident::Class,
+    program_header::ClassParseProgramHeader,
+};
 
 mod class_32;
 pub use class_32::*;
@@ -17,12 +20,23 @@ pub use merge::*;
 pub type AnyClass = Merge<Class32, Class64>;
 
 /// A combination of all other class parsing traits.
-pub trait ClassParse: ClassParseElfHeader + ClassParseBase {}
+pub trait ClassParse: ClassParseElfHeader + ClassParseProgramHeader + ClassParseBase {}
 
 /// The base definitions of a class aware parser.
 pub trait ClassParseBase: Clone + Copy {
     /// An unsigned class sized integer.
-    type ClassUsize: TryInto<usize> + fmt::Debug + fmt::Display;
+    type ClassUsize: Clone
+        + Copy
+        + TryInto<usize>
+        + fmt::Debug
+        + fmt::Display
+        + Eq
+        + Ord
+        + AdditiveIdentity
+        + MultiplicativeIdentity
+        + core::ops::Add<Output = Self::ClassUsize>
+        + core::ops::Div<Output = Self::ClassUsize>
+        + core::ops::Rem<Output = Self::ClassUsize>;
     /// A signed class sized integer.
     type ClassIsize: fmt::Debug + fmt::Display;
 
@@ -76,3 +90,31 @@ impl fmt::Display for UnsupportedClassError {
 }
 
 impl error::Error for UnsupportedClassError {}
+
+/// Defines a multiplicative identity for [`Self`].
+pub trait MultiplicativeIdentity {
+    /// The multiplicative identity of [`Self`].
+    const MULTIPLICATIVE_IDENTITY: Self;
+}
+
+impl MultiplicativeIdentity for u32 {
+    const MULTIPLICATIVE_IDENTITY: Self = 1;
+}
+
+impl MultiplicativeIdentity for u64 {
+    const MULTIPLICATIVE_IDENTITY: Self = 1;
+}
+
+/// Defines a multiplicative identity for [`Self`].
+pub trait AdditiveIdentity {
+    /// The additive identity of [`Self`].
+    const ADDITIVE_IDENTITY: Self;
+}
+
+impl AdditiveIdentity for u32 {
+    const ADDITIVE_IDENTITY: Self = 0;
+}
+
+impl AdditiveIdentity for u64 {
+    const ADDITIVE_IDENTITY: Self = 0;
+}
