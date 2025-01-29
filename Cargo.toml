@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     # Common libraries
+    "common/elf",
     "common/font",
 
     # Tools
@@ -19,6 +20,7 @@ repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
 # Common libraries
+elf = { path = "common/elf" }
 font = { path = "common/font" }
 
 # Tools
