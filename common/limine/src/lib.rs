@@ -13,6 +13,13 @@ pub const REQUESTS_START_MARKER: [u64; 4] = [
 /// Marks the end of the Limine boot protocol feature requests section.
 pub const REQUESTS_END_MARKER: [u64; 2] = [0xadc0e0531bb10d03, 0x9572709f31764c62];
 
+/// The first of the two common magic numbers used to identify a Limine boot protocol feature
+/// request.
+pub const REQUEST_MAGIC_0: u64 = 0xc7b1dd30df4c8b88;
+/// The first of the two common magic numbers used to identify a Limine boot protocol feature
+/// request.
+pub const REQUEST_MAGIC_1: u64 = 0x0a82e883a194f07b;
+
 /// The base revision of the Limine boot protocol this crate provides.
 pub const BASE_REVISION: u64 = 3;
 
