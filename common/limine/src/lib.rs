@@ -2,6 +2,8 @@
 
 #![no_std]
 
+pub mod bootloader_info;
+
 /// Marks the start of the Limine boot protocol feature requests section.
 pub const REQUESTS_START_MARKER: [u64; 4] = [
     0xf6b8f4b39de7d1ae,
