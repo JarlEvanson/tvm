@@ -6,6 +6,7 @@ pub mod bootloader_info;
 pub mod firmware_type;
 pub mod framebuffer;
 pub mod hhdm;
+pub mod mp;
 pub mod paging_mode;
 pub mod stack_size;
 
