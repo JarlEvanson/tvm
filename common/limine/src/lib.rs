@@ -8,6 +8,7 @@ pub mod efi_mem_map;
 pub mod efi_sys_table;
 pub mod entry_point;
 pub mod executable;
+pub mod executable_addr;
 pub mod firmware_type;
 pub mod framebuffer;
 pub mod hhdm;
