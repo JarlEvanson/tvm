@@ -2,6 +2,7 @@
 
 #![no_std]
 
+pub mod boot_time;
 pub mod bootloader_info;
 pub mod efi_mem_map;
 pub mod efi_sys_table;
