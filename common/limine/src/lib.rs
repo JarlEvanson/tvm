@@ -3,6 +3,7 @@
 #![no_std]
 
 pub mod bootloader_info;
+pub mod firmware_type;
 
 /// Marks the start of the Limine boot protocol feature requests section.
 pub const REQUESTS_START_MARKER: [u64; 4] = [
