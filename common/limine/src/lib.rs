@@ -4,6 +4,7 @@
 
 pub mod bootloader_info;
 pub mod entry_point;
+pub mod executable;
 pub mod firmware_type;
 pub mod framebuffer;
 pub mod hhdm;
