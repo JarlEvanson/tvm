@@ -9,6 +9,7 @@ pub mod firmware_type;
 pub mod framebuffer;
 pub mod hhdm;
 pub mod memory_map;
+pub mod module;
 pub mod mp;
 pub mod paging_mode;
 pub mod stack_size;
