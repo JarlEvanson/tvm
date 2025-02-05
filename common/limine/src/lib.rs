@@ -4,6 +4,7 @@
 
 pub mod bootloader_info;
 pub mod firmware_type;
+pub mod hhdm;
 pub mod stack_size;
 
 /// Marks the start of the Limine boot protocol feature requests section.
