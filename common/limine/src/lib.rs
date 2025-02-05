@@ -3,6 +3,7 @@
 #![no_std]
 
 pub mod bootloader_info;
+pub mod entry_point;
 pub mod firmware_type;
 pub mod framebuffer;
 pub mod hhdm;
