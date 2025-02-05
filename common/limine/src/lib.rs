@@ -12,6 +12,7 @@ pub mod memory_map;
 pub mod module;
 pub mod mp;
 pub mod paging_mode;
+pub mod rsdp;
 pub mod stack_size;
 
 /// Marks the start of the Limine boot protocol feature requests section.
