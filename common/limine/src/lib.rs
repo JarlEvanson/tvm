@@ -3,6 +3,7 @@
 #![no_std]
 
 pub mod bootloader_info;
+pub mod efi_sys_table;
 pub mod entry_point;
 pub mod executable;
 pub mod firmware_type;
