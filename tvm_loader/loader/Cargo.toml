@@ -7,9 +7,10 @@ license.workspace = true
 repository.workspace = true
 
 [features]
-graphics = []
+graphics = [ "dep:font" ]
 
 [dependencies]
+font = { workspace = true, optional = true }
 
 [lints]
 workspace = true
