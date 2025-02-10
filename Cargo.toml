@@ -4,6 +4,9 @@ members = [
     # Common libraries
     "common/font",
 
+    # Tools
+    "tools/font-converter",
+
     # TVM loader executable
     "tvm_loader/loader",
 ]
@@ -17,6 +20,9 @@ repository = "https://github.com/JarlEvanson/tvm"
 [workspace.dependencies]
 # Common libraries
 font = { path = "common/font" }
+
+# Tools
+font-converter = { path = "tools/font-converter" }
 
 # TVM loader executable
 tvm_loader = { path = "tvm_loader/loader" }
