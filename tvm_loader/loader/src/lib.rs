@@ -4,3 +4,5 @@
 //! many other architecture, platform, and system crates utilize.
 
 #![no_std]
+
+pub mod logging;
