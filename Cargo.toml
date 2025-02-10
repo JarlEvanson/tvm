@@ -1,6 +1,9 @@
 [workspace]
 resolver = "2"
 members = [
+    # Common libraries
+    "common/font",
+
     # TVM loader executable
     "tvm_loader/loader",
 ]
@@ -12,6 +15,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
+# Common libraries
+font = { path = "common/font" }
+
 # TVM loader executable
 tvm_loader = { path = "tvm_loader/loader" }
 
