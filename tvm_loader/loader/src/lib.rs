@@ -8,3 +8,4 @@
 #[cfg(feature = "graphics")]
 pub mod graphics;
 pub mod logging;
+pub mod memory;
