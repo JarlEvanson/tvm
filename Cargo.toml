@@ -1,6 +1,9 @@
 [workspace]
 resolver = "2"
-members = []
+members = [
+    # TVM loader executable
+    "tvm_loader/loader",
+]
 
 [workspace.package]
 authors = [ "Jarl Evanson <evanson.jarl@gmail.com>" ]
@@ -9,6 +12,8 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
+# TVM loader executable
+tvm_loader = { path = "tvm_loader/loader" }
 
 [workspace.lints.rust]
 # Safety lints
