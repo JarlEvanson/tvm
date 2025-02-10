@@ -6,6 +6,7 @@ members = [
     "common/concurrency",
     "common/elf",
     "common/font",
+    "common/limine",
 
     # Tools
     "tools/font-converter",
@@ -26,6 +27,7 @@ boot-info = { path = "common/boot-info" }
 concurrency = { path = "common/concurrency" }
 elf = { path = "common/elf" }
 font = { path = "common/font" }
+limine = { path = "common/limine" }
 
 # Tools
 font-converter = { path = "tools/font-converter" }
