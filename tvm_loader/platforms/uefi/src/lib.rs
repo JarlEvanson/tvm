@@ -15,6 +15,7 @@ pub use uefi::{data_types::Handle, data_types::Status, table::system::SystemTabl
 
 pub mod logging;
 pub mod memory;
+pub mod tables;
 
 /// The stored [`SystemTable`] for the executable.
 static SYSTEM_TABLE_PTR: AtomicPtr<SystemTable> = AtomicPtr::new(ptr::null_mut());
