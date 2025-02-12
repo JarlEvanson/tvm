@@ -5,6 +5,7 @@
 
 #![no_std]
 
+pub mod elf;
 #[cfg(feature = "graphics")]
 pub mod graphics;
 pub mod logging;
