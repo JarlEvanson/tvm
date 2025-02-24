@@ -14,6 +14,7 @@ use uefi::table::boot::BootServices1_0;
 pub use uefi::{data_types::Handle, data_types::Status, table::system::SystemTable};
 
 pub mod logging;
+pub mod memory;
 
 /// The stored [`SystemTable`] for the executable.
 static SYSTEM_TABLE_PTR: AtomicPtr<SystemTable> = AtomicPtr::new(ptr::null_mut());

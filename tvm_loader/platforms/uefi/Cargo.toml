@@ -9,6 +9,7 @@ repository.workspace = true
 [dependencies]
 tvm_loader.workspace = true
 
+concurrency.workspace = true
 uefi.workspace = true
 
 [lints]
