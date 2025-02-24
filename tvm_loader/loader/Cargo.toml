@@ -10,6 +10,7 @@ repository.workspace = true
 graphics = [ "dep:font" ]
 
 [dependencies]
+elf.workspace = true
 font = { workspace = true, optional = true }
 
 [lints]
