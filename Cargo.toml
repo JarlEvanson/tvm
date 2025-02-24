@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     # Common libraries
+    "common/concurrency",
     "common/elf",
 
     # TVM loader executable
@@ -22,6 +23,7 @@ repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
 # Common libraries
+concurrency = { path = "common/concurrency" }
 elf = { path = "common/elf" }
 
 # TVM loader executable
