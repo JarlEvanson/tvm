@@ -44,6 +44,7 @@ dependencies = [
 name = "tvm_loader-uefi"
 version = "0.1.0"
 dependencies = [
+ "concurrency",
  "tvm_loader",
  "uefi",
 ]
