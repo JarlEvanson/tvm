@@ -10,6 +10,7 @@ use core::fmt;
 pub mod data_types;
 pub mod memory;
 pub mod protocol;
+pub mod table;
 
 /// Forces formatting to be carried out as [`LowerHex`][flh].
 ///
