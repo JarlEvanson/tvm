@@ -2,9 +2,99 @@
 
 #![no_std]
 
+use core::{
+    ffi,
+    ptr::{self, NonNull},
+    sync::atomic::{AtomicPtr, Ordering},
+};
+
 #[doc(hidden)]
 pub use tvm_loader::log_error;
-pub use uefi::data_types::Status;
+use uefi::table::boot::BootServices1_0;
+pub use uefi::{data_types::Handle, data_types::Status, table::system::SystemTable};
+
+/// The stored [`SystemTable`] for the executable.
+static SYSTEM_TABLE_PTR: AtomicPtr<SystemTable> = AtomicPtr::new(ptr::null_mut());
+/// The stored [`Handle`] for the executable's image.
+static IMAGE_HANDLE: AtomicPtr<ffi::c_void> = AtomicPtr::new(ptr::null_mut());
+
+/// Returns the [`SystemTable`] pointer for the `tvm_loader` crate.
+pub fn system_table_ptr() -> Option<NonNull<SystemTable>> {
+    let ptr = SYSTEM_TABLE_PTR.load(Ordering::Acquire);
+
+    NonNull::new(ptr)
+}
+
+/// Sets the [`SystemTable`] pointer for this crate.
+///
+/// # Safety
+///
+/// The provided `ptr` must be the [`SystemTable`] pointer passed to the entry point of the UEFI
+/// executable.
+pub unsafe fn set_system_table_ptr(ptr: Option<NonNull<SystemTable>>) {
+    SYSTEM_TABLE_PTR.store(
+        ptr.map(NonNull::as_ptr).unwrap_or(ptr::null_mut()),
+        Ordering::Release,
+    )
+}
+
+/// Returns the [`BootServices1_0`] pointer.
+fn boot_services_ptr() -> Option<NonNull<BootServices1_0>> {
+    match system_table_ptr() {
+        Some(system_table_ptr) => {
+            // SAFETY:
+            //
+            // According to the invariants of [`set_system_table_ptr()`], since
+            // [`SYSTEM_TABLE_PTR`] is [`Some`], it is safe to dereference.
+            let boot_services_ptr = unsafe { (*system_table_ptr.as_ptr()).boot_services };
+
+            NonNull::new(boot_services_ptr)
+        }
+        None => None,
+    }
+}
+
+/// Returns the image [`Handle`].
+fn image_handle() -> Handle {
+    Handle(IMAGE_HANDLE.load(Ordering::Acquire))
+}
+
+/// Sets the image [`Handle`] for this crate.
+///
+/// # Safety
+///
+/// The provided `image_handle` must be the image [`Handle`] passed to the entry point of the
+/// UEFI executable.
+pub unsafe fn set_image_handle(image_handle: Handle) {
+    IMAGE_HANDLE.store(image_handle.0, Ordering::Release)
+}
+
+/// Initializes the `tvm_loader-uefi` crate. This sets the image [`Handle`] and the [`SystemTable`]
+/// pointer for this crate.
+///
+/// # Safety
+///
+/// - The provided `image_handle` msut be the image [`Handle`] passed to the entry point of the
+///   UEFI executable.
+/// - The provided `system_table_ptr` must be the [`SystemTable`] passed to the entry point of the
+///   UEFI executable.
+pub unsafe fn initialize_uefi(
+    image_handle: Handle,
+    system_table_ptr: Option<NonNull<SystemTable>>,
+) -> bool {
+    // SAFETY:
+    //
+    // The invariants of this function fulfill the invariants required to call
+    // [`set_image_handle()`].
+    unsafe { set_image_handle(image_handle) }
+    // SAFETY:
+    //
+    // The invariants of this function fulfill the invariants required to call
+    // [`set_system_table_ptr()`].
+    unsafe { set_system_table_ptr(system_table_ptr) }
+
+    true
+}
 
 /// Create the `efi_main` function and accepts the main function to be called after setup of
 /// `tvm_loader-uefi` is completed.
@@ -19,7 +109,17 @@ macro_rules! unsafe_entry_point {
         ///
         /// This function should only be the entry point of the executable.
         #[unsafe(no_mangle)]
-        extern "efiapi" fn efi_main() -> $crate::Status {
+        extern "efiapi" fn efi_main(
+            image_handle: *mut core::ffi::c_void,
+            system_table_ptr: *mut $crate::SystemTable,
+        ) -> $crate::Status {
+            let image_handle = unsafe { $crate::Handle(image_handle) };
+            let system_table_ptr = core::ptr::NonNull::new(system_table_ptr);
+            let initialized = unsafe { $crate::initialize_uefi(image_handle, system_table_ptr) };
+            if !initialized {
+                return $crate::Status::LOAD_ERROR;
+            }
+
             let func: fn() -> Result<(), _> = $entry_point;
             match func() {
                 Ok(()) => $crate::Status::SUCCESS,
