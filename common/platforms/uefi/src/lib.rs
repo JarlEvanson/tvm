@@ -9,6 +9,7 @@ use core::fmt;
 
 pub mod data_types;
 pub mod memory;
+pub mod protocol;
 
 /// Forces formatting to be carried out as [`LowerHex`][flh].
 ///
