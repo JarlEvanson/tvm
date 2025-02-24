@@ -39,3 +39,7 @@ dependencies = [
  "elf",
  "font",
 ]
+
+[[package]]
+name = "uefi"
+version = "0.1.0"
