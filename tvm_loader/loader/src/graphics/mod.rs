@@ -3,6 +3,7 @@
 //! Provides interfaces and implementations intended to help `tvm_loader` crates carry out
 //! graphical output.
 
+pub mod console;
 pub mod surface;
 
 pub mod font {
