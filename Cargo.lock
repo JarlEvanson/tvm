@@ -23,3 +23,6 @@ checksum = "8dfb5d24f130ce16dd7e608140773454eb92d69191c258e8af9d811bcab03f1d"
 [[package]]
 name = "tvm_loader"
 version = "0.1.0"
+dependencies = [
+ "font",
+]
