@@ -6,6 +6,9 @@ members = [
     "common/concurrency",
     "common/elf",
 
+    ## Common platform-specific libraries
+    "common/platforms/uefi",
+
     # TVM loader executable
     "tvm_loader/loader",
 
@@ -27,6 +30,9 @@ repository = "https://github.com/JarlEvanson/tvm"
 boot-info = { path = "common/boot-info" }
 concurrency = { path = "common/concurrency" }
 elf = { path = "common/elf" }
+
+## Common platform-specific libraries
+uefi = { path = "common/platforms/uefi" }
 
 # TVM loader executable
 tvm_loader = { path = "tvm_loader/loader" }
