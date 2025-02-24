@@ -3,5 +3,9 @@
 version = 4
 
 [[package]]
+name = "font"
+version = "0.1.0"
+
+[[package]]
 name = "tvm_loader"
 version = "0.1.0"

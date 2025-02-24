@@ -3,6 +3,9 @@ resolver = "2"
 members = [
     # TVM loader executable
     "tvm_loader/loader",
+
+    ## TVM loader libraries
+    "tvm_loader/libs/font",
 ]
 
 [workspace.package]
@@ -14,6 +17,9 @@ repository = "https://github.com/JarlEvanson/tvm"
 [workspace.dependencies]
 # TVM loader executable
 tvm_loader = { path = "tvm_loader/loader" }
+
+## TVM loader libraries
+font = { path = "tvm_loader/libs/font" }
 
 [workspace.lints.rust]
 # Safety lints
