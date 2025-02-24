@@ -2,6 +2,7 @@
 
 use core::fmt;
 
+pub mod boot;
 pub mod runtime;
 
 /// Data structure that comes before all of the standard UEFI table types.
