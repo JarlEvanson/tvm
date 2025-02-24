@@ -41,5 +41,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "tvm_loader-uefi"
+version = "0.1.0"
+dependencies = [
+ "tvm_loader",
+]
+
+[[package]]
 name = "uefi"
 version = "0.1.0"

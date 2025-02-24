@@ -12,6 +12,9 @@ members = [
     # TVM loader executable
     "tvm_loader/loader",
 
+    ## TVM loader platforms
+    "tvm_loader/platforms/uefi",
+
     ## TVM loader libraries
     "tvm_loader/libs/font",
 
@@ -36,6 +39,9 @@ uefi = { path = "common/platforms/uefi" }
 
 # TVM loader executable
 tvm_loader = { path = "tvm_loader/loader" }
+
+## TVM loader platforms
+tvm_loader-uefi = { path = "tvm_loader/platforms/uefi" }
 
 ## TVM loader libraries
 font = { path = "tvm_loader/libs/font" }
