@@ -7,6 +7,7 @@
 
 extern crate alloc;
 
+pub mod elf_loader;
 #[cfg(feature = "graphics")]
 pub mod graphics;
 pub mod logging;
