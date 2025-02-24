@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
     # Common libraries
+    "common/boot-info",
     "common/concurrency",
     "common/elf",
 
@@ -23,6 +24,7 @@ repository = "https://github.com/JarlEvanson/tvm"
 
 [workspace.dependencies]
 # Common libraries
+boot-info = { path = "common/boot-info" }
 concurrency = { path = "common/concurrency" }
 elf = { path = "common/elf" }
 
