@@ -6,6 +6,9 @@ members = [
 
     ## TVM loader libraries
     "tvm_loader/libs/font",
+
+    ## TVM loader tools
+    "tvm_loader/tools/font-converter",
 ]
 
 [workspace.package]
@@ -20,6 +23,9 @@ tvm_loader = { path = "tvm_loader/loader" }
 
 ## TVM loader libraries
 font = { path = "tvm_loader/libs/font" }
+
+## TVM loader tools
+font-converter = { path = "tvm_loader/tools/font-converter" }
 
 [workspace.lints.rust]
 # Safety lints
