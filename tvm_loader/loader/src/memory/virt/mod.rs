@@ -3,6 +3,8 @@
 //! The interfaces are defined in this module and implemented by a platform or system specific
 //! crate.
 
+pub mod loader;
+
 use core::{error, fmt};
 
 use alloc::vec::Vec;
@@ -287,3 +289,126 @@ pub struct FreeRegion {
     /// The size, in bytes, of the free region.
     pub length: u64,
 }
+
+/// Protection settings for a page in an address space.
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct ProtectionFlags(u32);
+
+impl ProtectionFlags {
+    /// The page should be readable.
+    pub const READ: Self = Self(0x1);
+    /// The page should be writable.
+    pub const WRITE: Self = Self(0x2);
+    /// The page should be executable.
+    pub const EXECUTE: Self = Self(0x4);
+}
+
+impl core::ops::BitOr for ProtectionFlags {
+    type Output = Self;
+
+    fn bitor(self, rhs: Self) -> Self::Output {
+        Self(self.0 | rhs.0)
+    }
+}
+
+impl core::ops::BitOrAssign for ProtectionFlags {
+    fn bitor_assign(&mut self, rhs: Self) {
+        *self = *self | rhs;
+    }
+}
+
+impl core::ops::BitAnd for ProtectionFlags {
+    type Output = Self;
+
+    fn bitand(self, rhs: Self) -> Self::Output {
+        Self(self.0 & rhs.0)
+    }
+}
+
+impl core::ops::BitAndAssign for ProtectionFlags {
+    fn bitand_assign(&mut self, rhs: Self) {
+        *self = *self & rhs;
+    }
+}
+
+impl core::ops::BitXor for ProtectionFlags {
+    type Output = Self;
+
+    fn bitxor(self, rhs: Self) -> Self::Output {
+        Self(self.0 ^ rhs.0)
+    }
+}
+
+impl core::ops::BitXorAssign for ProtectionFlags {
+    fn bitxor_assign(&mut self, rhs: Self) {
+        *self = *self ^ rhs;
+    }
+}
+
+impl core::ops::Not for ProtectionFlags {
+    type Output = Self;
+
+    fn not(self) -> Self::Output {
+        Self(!self.0)
+    }
+}
+
+/// Various errors that can occur when mapping a physical region into an address space.
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub enum MapError {
+    /// The requested mapping would overflow in the target address space.
+    AddressOverflow,
+    /// The requested mapping starts at an invalid address.
+    AlignmentError,
+    /// An error occurred when allocating memory required to fulfill the requested mapping.
+    AllocationError,
+    /// The virtual region is already mapped.
+    AlreadyMapped,
+    /// An unspecified error occurred.
+    GeneralError,
+    /// A provided address is invalid.
+    InvalidAddress,
+    /// The size of the requested mapping is invalid.
+    InvalidSize,
+}
+
+impl fmt::Display for MapError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::AddressOverflow => "requested mapping involves overflow".fmt(f),
+            Self::AlignmentError => "requested mapping starts at an invalid alignment".fmt(f),
+            Self::AllocationError => "requested mapping had a required allocation fail".fmt(f),
+            Self::AlreadyMapped => "requested virtual region is already in use".fmt(f),
+            Self::GeneralError => "an unspecified error occurred".fmt(f),
+            Self::InvalidAddress => "requested mapping involves an invalid address".fmt(f),
+            Self::InvalidSize => "requested mapping is too large".fmt(f),
+        }
+    }
+}
+
+impl error::Error for MapError {}
+
+/// An error obtained when attempting to unmap a virtual region that is already not mapped.
+#[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct NotMapped;
+
+impl fmt::Display for NotMapped {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        "requested unmapping region was not mapped".fmt(f)
+    }
+}
+
+impl error::Error for NotMapped {}
+
+/// An error obtained when attempting to translate a physical or virtual address using an address
+/// space.
+#[derive(Clone, Copy, Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct NoMapping;
+
+impl fmt::Display for NoMapping {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        "no mapping exists to facilitate the translation".fmt(f)
+    }
+}
+
+impl error::Error for NoMapping {}
