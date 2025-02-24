@@ -7,4 +7,5 @@
 
 extern crate alloc;
 
+pub mod logging;
 pub mod memory;
