@@ -5,6 +5,7 @@ use core::fmt;
 pub mod boot;
 pub mod configuration;
 pub mod runtime;
+pub mod system;
 
 /// Data structure that comes before all of the standard UEFI table types.
 #[repr(C)]
