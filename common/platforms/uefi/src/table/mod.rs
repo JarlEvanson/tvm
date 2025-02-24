@@ -2,6 +2,8 @@
 
 use core::fmt;
 
+pub mod runtime;
+
 /// Data structure that comes before all of the standard UEFI table types.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
