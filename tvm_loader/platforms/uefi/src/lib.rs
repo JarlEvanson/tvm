@@ -13,6 +13,8 @@ pub use tvm_loader::log_error;
 use uefi::table::boot::BootServices1_0;
 pub use uefi::{data_types::Handle, data_types::Status, table::system::SystemTable};
 
+pub mod logging;
+
 /// The stored [`SystemTable`] for the executable.
 static SYSTEM_TABLE_PTR: AtomicPtr<SystemTable> = AtomicPtr::new(ptr::null_mut());
 /// The stored [`Handle`] for the executable's image.
