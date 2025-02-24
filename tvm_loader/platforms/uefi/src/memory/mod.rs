@@ -2,3 +2,4 @@
 //! `tvm_loader`.
 
 pub mod allocator;
+pub mod phys;
