@@ -3,3 +3,4 @@
 
 pub mod allocator;
 pub mod phys;
+pub mod virt;
