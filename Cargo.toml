@@ -17,6 +17,7 @@ members = [
 
     ## TVM loader architectures
     "tvm_loader/architectures/x86-common",
+    "tvm_loader/architectures/x86_64",
 
     ## TVM loader platforms
     "tvm_loader/platforms/uefi",
@@ -51,6 +52,7 @@ tvm_loader = { path = "tvm_loader/loader" }
 
 ## TVM loader architectures
 tvm_loader-x86-common = { path = "tvm_loader/architectures/x86-common" }
+tvm_loader-x86_64 = { path = "tvm_loader/architectures/x86_64" }
 
 ## TVM loader platforms
 tvm_loader-uefi = { path = "tvm_loader/platforms/uefi" }
