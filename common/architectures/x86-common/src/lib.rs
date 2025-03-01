@@ -2,3 +2,5 @@
 //! registers, and structures.
 
 #![no_std]
+
+pub mod instructions;
