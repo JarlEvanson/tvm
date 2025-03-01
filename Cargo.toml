@@ -6,6 +6,9 @@ members = [
     "common/concurrency",
     "common/elf",
 
+    ## Common architecture-specific libraries
+    "common/architectures/x86-common",
+
     ## Common platform-specific libraries
     "common/platforms/uefi",
 
@@ -33,6 +36,9 @@ repository = "https://github.com/JarlEvanson/tvm"
 boot-info = { path = "common/boot-info" }
 concurrency = { path = "common/concurrency" }
 elf = { path = "common/elf" }
+    
+## Common architecture-specific libraries
+x86-common = { path = "common/architectures/x86-common" }
 
 ## Common platform-specific libraries
 uefi = { path = "common/platforms/uefi" }

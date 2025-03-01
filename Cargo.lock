@@ -52,3 +52,7 @@ dependencies = [
 [[package]]
 name = "uefi"
 version = "0.1.0"
+
+[[package]]
+name = "x86-common"
+version = "0.1.0"
