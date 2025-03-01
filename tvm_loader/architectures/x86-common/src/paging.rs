@@ -1,5 +1,8 @@
 //! Common `x86` and `x86_64` specific paging-related constants and traits.
 
+use tvm_loader::memory::virt::arch::AddressSpace;
+use x86_common::PagingMode;
+
 /// All accesses are uncacheable. Write combining is not allowed. Speculative accesses are not
 /// allowed.
 pub const UNCACHEABLE: u64 = 0x00;
@@ -31,3 +34,11 @@ pub const PAT: u64 = WRITEBACK
     | (WRITE_PROTECT << 40)
     | (UNCACHEABLE << 48)
     | (UNCACHEABLE << 56);
+
+/// Interface providing information about `x86` and `x86_64` page table schemes.
+pub trait X86CommonAddressSpace: AddressSpace {
+    /// The physical address at the top of the page table scheme.
+    fn physical_address(&self) -> u64;
+    /// The `x86/x86_64` specific paging mode that the [`AddressSpace`] implements.
+    fn paging_mode(&self) -> PagingMode;
+}
