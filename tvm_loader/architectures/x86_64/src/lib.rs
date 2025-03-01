@@ -2,6 +2,8 @@
 
 #![no_std]
 
+mod paging;
 mod relocation;
 
+pub use paging::{FeatureNotSupported, X86_64PageTable};
 pub use relocation::handle_relocation;
