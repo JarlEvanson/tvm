@@ -2,3 +2,4 @@
 
 pub mod bits_32;
 pub mod disabled;
+pub mod pae;
