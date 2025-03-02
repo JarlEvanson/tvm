@@ -1,0 +1,20 @@
+[package]
+name = "tvm_loader-x86_64-uefi"
+version = "0.1.0"
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+tvm_loader.workspace = true
+tvm_loader-uefi.workspace = true
+tvm_loader-x86-common.workspace = true
+tvm_loader-x86.workspace = true
+tvm_loader-x86_64.workspace = true
+
+uefi.workspace = true
+x86-common.workspace = true
+
+[lints]
+workspace = true
