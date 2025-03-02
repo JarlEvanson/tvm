@@ -22,6 +22,9 @@ members = [
 
     ## TVM loader platforms
     "tvm_loader/platforms/uefi",
+    
+    ## TVM loader systems
+    "tvm_loader/systems/x86-uefi",
 
     ## TVM loader libraries
     "tvm_loader/libs/font",
