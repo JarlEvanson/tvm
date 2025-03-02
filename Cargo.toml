@@ -25,6 +25,7 @@ members = [
     
     ## TVM loader systems
     "tvm_loader/systems/x86-uefi",
+    "tvm_loader/systems/x86_64-uefi",
 
     ## TVM loader libraries
     "tvm_loader/libs/font",
