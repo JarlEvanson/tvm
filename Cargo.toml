@@ -36,6 +36,9 @@ members = [
 
     ## TVM loader tools
     "tvm_loader/tools/font-converter",
+
+    # Cargo xtask
+    "xtask",
 ]
 
 [workspace.package]
@@ -72,6 +75,10 @@ font = { path = "tvm_loader/libs/font" }
 
 ## TVM loader tools
 font-converter = { path = "tvm_loader/tools/font-converter" }
+
+# Tool external dependencies
+anyhow = "1.0.97"
+clap = "4.5.31"
 
 [workspace.lints.rust]
 # Safety lints
