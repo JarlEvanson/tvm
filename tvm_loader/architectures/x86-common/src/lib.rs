@@ -3,3 +3,6 @@
 #![no_std]
 
 pub mod paging;
+mod switch;
+
+pub use switch::{SwitchError, switch};
