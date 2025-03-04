@@ -105,6 +105,7 @@ pub fn load_application(
             SegmentType::LOAD => {
                 let start_address = slide + header.virtual_address();
                 let end_address = start_address + header.memory_size();
+                log_trace!("loading segment region: {start_address:#x}-{end_address:#x}");
 
                 let aligned_start_address =
                     start_address - start_address % application_space.page_size();
@@ -136,7 +137,8 @@ pub fn load_application(
                         byte_count.div_ceil(application_space.page_size()),
                         protection,
                     )
-                    .map_err(|_| LoadApplicationError::OverlappingLoadSegments)?;
+                    .expect("A");
+                //.map_err(|_| LoadApplicationError::OverlappingLoadSegments)?;
 
                 let file_bytes =
                     &application[header.file_offset() as usize..][..header.file_size() as usize];
