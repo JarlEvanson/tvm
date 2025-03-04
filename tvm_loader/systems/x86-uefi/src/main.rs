@@ -7,14 +7,13 @@ use alloc::boxed::Box;
 use tvm_loader::{
     elf_loader::{Machine, get_machine, load_application},
     log_error,
-    memory::virt::arch::AddressSpace,
 };
 use tvm_loader_uefi::unsafe_entry_point;
 use tvm_loader_x86::paging::{
     bits_32::Bits32PageTables, disabled::DisabledPaging, pae::PaePageTables,
 };
 use tvm_loader_x86_64::X86_64PageTable;
-use tvm_loader_x86_common::paging::X86CommonAddressSpace;
+use tvm_loader_x86_common::{paging::X86CommonAddressSpace, switch};
 use x86_common::{PagingMode, current_paging_mode, max_supported_paging_mode};
 
 extern crate alloc;
@@ -23,7 +22,7 @@ extern crate tvm_loader_uefi;
 unsafe_entry_point!(main);
 
 fn main() -> Result<(), tvm_loader_uefi::Status> {
-    let mut switch_space: Box<dyn AddressSpace> = match current_paging_mode() {
+    let mut switch_space: Box<dyn X86CommonAddressSpace> = match current_paging_mode() {
         PagingMode::Disabled => Box::new(DisabledPaging),
         PagingMode::Bits32 => Box::new(Bits32PageTables::new()),
         PagingMode::Pae => {
@@ -36,7 +35,7 @@ fn main() -> Result<(), tvm_loader_uefi::Status> {
 
     let embedded_image = tvm_loader_uefi::embedded::get_tvm_image();
     let machine = get_machine(embedded_image).expect("invalid embedded tvm image");
-    match machine {
+    let tear_down = match machine {
         Machine::INTEL_386 => {
             let mut application_space: Box<dyn X86CommonAddressSpace> =
                 match max_supported_paging_mode() {
@@ -58,6 +57,14 @@ fn main() -> Result<(), tvm_loader_uefi::Status> {
             );
 
             let entry_point = result.expect("failed to load tvm image");
+
+            let result = switch(
+                switch_space.as_mut(),
+                application_space.as_mut(),
+                entry_point,
+            );
+
+            result.expect("failed to switch to tvm")
         }
         Machine::X86_64 => {
             let mut application_space = X86_64PageTable::new_max_supported()
@@ -71,8 +78,16 @@ fn main() -> Result<(), tvm_loader_uefi::Status> {
             );
 
             let entry_point = result.expect("failed to load tvm image");
+
+            let result = switch(switch_space.as_mut(), &mut application_space, entry_point);
+
+            result.expect("failed to switch to tvm")
         }
         machine => unimplemented!("{machine:?} is not supported"),
+    };
+
+    if !tear_down {
+        todo!()
     }
 
     Ok(())
