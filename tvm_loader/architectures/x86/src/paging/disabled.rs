@@ -1,7 +1,7 @@
 //! Implementation of disabled paging.
 
 use tvm_loader::memory::virt::{
-    arch::AddressSpace, MapError, NoMapping, NotMapped, ProtectionFlags,
+    MapError, NoMapping, NotMapped, ProtectionFlags, arch::AddressSpace,
 };
 
 /// An [`AddressSpace`] implementation for `x86`'s paging disabled mode.
