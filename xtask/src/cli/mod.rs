@@ -2,9 +2,11 @@
 
 use build_loader::BuildLoaderConfiguration;
 use build_tvm::BuildTvmConfiguration;
+use package::PackageConfiguration;
 
 pub mod build_loader;
 pub mod build_tvm;
+pub mod package;
 
 /// Parses the executable's arguments to construct an [`Action`].
 pub fn get_action() -> Action {
@@ -13,7 +15,7 @@ pub fn get_action() -> Action {
     match subcommand_name {
         "build-loader" => build_loader::parse_arguments(subcommand_matches),
         "build-tvm" => build_tvm::parse_arguments(subcommand_matches),
-        "run-qemu" => todo!(),
+        "package" => package::parse_arguments(subcommand_matches),
         _ => unreachable!("unexpected subcommand: {subcommand_name:?}"),
     }
 }
@@ -24,6 +26,7 @@ fn command_parser() -> clap::Command {
         .about("Developer utility for running various tasks on tvm and tvm loader")
         .subcommand(build_loader::subcommand_parser())
         .subcommand(build_tvm::subcommand_parser())
+        .subcommand(package::subcommand_parser())
         .subcommand_required(true)
         .arg_required_else_help(true)
 }
@@ -35,6 +38,8 @@ pub enum Action {
     BuildLoader(BuildLoaderConfiguration),
     /// Builds `tvm` with a specific configuration.
     BuildTvm(BuildTvmConfiguration),
+    /// Packages `tvm_loader` and `tvm` into a single stand-alone binary ready for use.
+    Package(PackageConfiguration),
 }
 
 /// The architectures supported by `tvm`.
@@ -141,4 +146,13 @@ impl clap::ValueEnum for Profile {
     fn to_possible_value(&self) -> Option<clap::builder::PossibleValue> {
         Some(clap::builder::PossibleValue::new(self.as_str()))
     }
+}
+
+/// An exclusive-or structure.
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
+pub enum Either<A, B> {
+    /// The first option.
+    A(A),
+    /// The second option.
+    B(B),
 }
