@@ -2,6 +2,7 @@
 
 #![no_std]
 
+pub mod paging;
 mod relocation;
 
 pub use relocation::handle_relocation;
