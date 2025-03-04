@@ -1,6 +1,6 @@
 //! Helper crate for building and testing `tvm`.
 
-use actions::{build_loader, build_tvm};
+use actions::{build_loader, build_tvm, package};
 use anyhow::Result;
 use cli::Action;
 
@@ -18,6 +18,10 @@ fn main() -> Result<()> {
         Action::BuildTvm(build_config) => {
             let path = build_tvm::handle(build_config)?;
             println!("tvm located at \"{}\"", path.display());
+        }
+        Action::Package(package_config) => {
+            let path = package::handle(package_config)?;
+            println!("tvm packaged at \"{}\"", path.display());
         }
     }
 
