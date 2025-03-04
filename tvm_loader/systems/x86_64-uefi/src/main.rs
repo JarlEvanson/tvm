@@ -10,6 +10,7 @@ use tvm_loader::{
 use tvm_loader_uefi::unsafe_entry_point;
 use tvm_loader_x86::paging::pae::PaePageTables;
 use tvm_loader_x86_64::X86_64PageTable;
+use tvm_loader_x86_common::switch;
 
 extern crate tvm_loader_uefi;
 
@@ -21,7 +22,7 @@ fn main() -> Result<(), tvm_loader_uefi::Status> {
 
     let embedded_image = tvm_loader_uefi::embedded::get_tvm_image();
     let machine = get_machine(embedded_image).expect("invalid embedded tvm image");
-    match machine {
+    let tear_down = match machine {
         Machine::INTEL_386 => {
             let mut application_space =
                 PaePageTables::new_max_supported().expect("failed to construct application tables");
@@ -34,6 +35,10 @@ fn main() -> Result<(), tvm_loader_uefi::Status> {
             );
 
             let entry_point = result.expect("failed to load tvm image");
+
+            let result = switch(&mut switch_space, &mut application_space, entry_point);
+
+            result.expect("failed to switch to tvm")
         }
         Machine::X86_64 => {
             let mut application_space = X86_64PageTable::new_max_supported()
@@ -47,8 +52,16 @@ fn main() -> Result<(), tvm_loader_uefi::Status> {
             );
 
             let entry_point = result.expect("failed to load tvm image");
+
+            let result = switch(&mut switch_space, &mut application_space, entry_point);
+
+            result.expect("failed to switch to tvm")
         }
         machine => unimplemented!("{machine:?} is not supported"),
+    };
+
+    if !tear_down {
+        todo!()
     }
 
     Ok(())
