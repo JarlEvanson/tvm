@@ -9,6 +9,7 @@ repository.workspace = true
 [dependencies]
 tvm_loader.workspace = true
 
+boot-info.workspace = true
 x86-common.workspace = true
 
 [lints]
