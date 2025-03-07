@@ -3,9 +3,12 @@
 use anyhow::Result;
 
 pub mod action;
+pub mod cli;
 pub mod loader;
 
 fn main() -> Result<()> {
+    match cli::get_action() {}
+
     Ok(())
 }
 
