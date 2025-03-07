@@ -19,6 +19,7 @@ fn main() -> Result<()> {
             let path = build_tvm(config)?;
             println!("tvm located at \"{}\"", path.display());
         }
+        Action::Embed(config) => todo!(),
     }
 
     Ok(())

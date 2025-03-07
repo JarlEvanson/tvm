@@ -5,9 +5,11 @@ use std::collections::HashSet;
 use build_loader::BuildLoaderConfiguration;
 use build_tvm::BuildTvmConfiguration;
 use clap::{ArgMatches, Command, error::ErrorKind};
+use embed::EmbedConfiguration;
 
 pub mod build_loader;
 pub mod build_tvm;
+pub mod embed;
 
 /// Parses `xtask`'s arguments to construct an [`Action`].
 #[expect(
@@ -24,6 +26,7 @@ pub fn get_action() -> Action {
             Action::BuildLoader(build_loader::parse_arguments(None, subcommand_matches))
         }
         "build-tvm" => Action::BuildTvm(build_tvm::parse_arguments(None, subcommand_matches)),
+        "embed" => Action::Embed(embed::parse_arguments(subcommand_matches)),
         _ => unreachable!("unexpected subcommand: {subcommand_name:?}"),
     }
 }
@@ -34,6 +37,7 @@ fn command_parser() -> Command {
         .about("Developer utility for running various tasks on tvm_loader and tvm")
         .subcommand(build_loader::subcommand_parser())
         .subcommand(build_tvm::subcommand_parser())
+        .subcommand(embed::subcommand_parser())
         .subcommand_required(true)
         .arg_required_else_help(true)
 }
@@ -45,6 +49,8 @@ pub enum Action {
     BuildLoader(BuildLoaderConfiguration),
     /// Build `tvm` with a specific configuration.
     BuildTvm(BuildTvmConfiguration),
+    /// Embed `tvm` into `tvm_loader` to form a single stand-alone binary ready for use.
+    Embed(EmbedConfiguration),
 }
 
 /// Parses arguments that specify the features of a build.
@@ -91,4 +97,13 @@ fn parse_feature(feature: &str) -> impl Iterator<Item = &str> + '_ {
         .split_whitespace()
         .flat_map(|s| s.split(','))
         .filter(|s| !s.is_empty())
+}
+
+/// An exclusive-or structure.
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
+pub enum Either<A, B> {
+    /// The first option.
+    A(A),
+    /// The second option.
+    B(B),
 }
