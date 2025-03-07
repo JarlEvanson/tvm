@@ -7,6 +7,7 @@ use cli::Action;
 pub mod action;
 pub mod cli;
 pub mod loader;
+pub mod tvm;
 
 fn main() -> Result<()> {
     match cli::get_action() {
