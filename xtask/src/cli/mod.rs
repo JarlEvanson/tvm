@@ -3,9 +3,11 @@
 use std::collections::HashSet;
 
 use build_loader::BuildLoaderConfiguration;
+use build_tvm::BuildTvmConfiguration;
 use clap::{ArgMatches, Command, error::ErrorKind};
 
 pub mod build_loader;
+pub mod build_tvm;
 
 /// Parses `xtask`'s arguments to construct an [`Action`].
 #[expect(
@@ -21,6 +23,7 @@ pub fn get_action() -> Action {
         "build-loader" => {
             Action::BuildLoader(build_loader::parse_arguments(None, subcommand_matches))
         }
+        "build-tvm" => Action::BuildTvm(build_tvm::parse_arguments(None, subcommand_matches)),
         _ => unreachable!("unexpected subcommand: {subcommand_name:?}"),
     }
 }
@@ -30,6 +33,7 @@ fn command_parser() -> Command {
     Command::new("xtask")
         .about("Developer utility for running various tasks on tvm_loader and tvm")
         .subcommand(build_loader::subcommand_parser())
+        .subcommand(build_tvm::subcommand_parser())
         .subcommand_required(true)
         .arg_required_else_help(true)
 }
@@ -39,6 +43,8 @@ fn command_parser() -> Command {
 pub enum Action {
     /// Build `tvm_loader` with a specific configuration.
     BuildLoader(BuildLoaderConfiguration),
+    /// Build `tvm` with a specific configuration.
+    BuildTvm(BuildTvmConfiguration),
 }
 
 /// Parses arguments that specify the features of a build.

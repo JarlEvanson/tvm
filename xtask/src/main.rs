@@ -15,6 +15,7 @@ fn main() -> Result<()> {
             let path = build_tvm_loader(config)?;
             println!("tvm_loader located at \"{}\"", path.display());
         }
+        Action::BuildTvm(config) => todo!(),
     }
 
     Ok(())
