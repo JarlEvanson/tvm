@@ -4,6 +4,7 @@
 
 pub mod build_loader;
 pub mod build_tvm;
+pub mod embed;
 
 use std::{error, fmt, io};
 

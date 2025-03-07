@@ -1,6 +1,6 @@
 //! Helper crate for building, packaging, and testing `tvm_loader` and `tvm`.
 
-use action::{build_loader::build_tvm_loader, build_tvm::build_tvm};
+use action::{build_loader::build_tvm_loader, build_tvm::build_tvm, embed::embed};
 use anyhow::Result;
 use cli::Action;
 
@@ -19,7 +19,10 @@ fn main() -> Result<()> {
             let path = build_tvm(config)?;
             println!("tvm located at \"{}\"", path.display());
         }
-        Action::Embed(config) => todo!(),
+        Action::Embed(config) => {
+            let path = embed(config)?;
+            println!("tvm_loader with embedded tvm at \"{}\"", path.display());
+        }
     }
 
     Ok(())
