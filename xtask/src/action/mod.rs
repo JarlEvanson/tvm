@@ -3,6 +3,7 @@
 //! [action]: crate::cli::Action
 
 pub mod build_loader;
+pub mod build_tvm;
 
 use std::{error, fmt, io};
 
