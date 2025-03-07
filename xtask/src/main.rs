@@ -2,6 +2,7 @@
 
 use anyhow::Result;
 
+pub mod action;
 pub mod loader;
 
 fn main() -> Result<()> {
