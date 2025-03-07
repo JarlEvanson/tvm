@@ -1,13 +1,16 @@
 //! Helper crate for building, packaging, and testing `tvm_loader` and `tvm`.
 
 use anyhow::Result;
+use cli::Action;
 
 pub mod action;
 pub mod cli;
 pub mod loader;
 
 fn main() -> Result<()> {
-    match cli::get_action() {}
+    match cli::get_action() {
+        Action::BuildLoader(config) => todo!(),
+    }
 
     Ok(())
 }
