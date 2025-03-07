@@ -1,5 +1,6 @@
 //! Helper crate for building, packaging, and testing `tvm_loader` and `tvm`.
 
+use action::build_loader::build_tvm_loader;
 use anyhow::Result;
 use cli::Action;
 
@@ -9,7 +10,10 @@ pub mod loader;
 
 fn main() -> Result<()> {
     match cli::get_action() {
-        Action::BuildLoader(config) => todo!(),
+        Action::BuildLoader(config) => {
+            let path = build_tvm_loader(config)?;
+            println!("tvm_loader located at \"{}\"", path.display());
+        }
     }
 
     Ok(())

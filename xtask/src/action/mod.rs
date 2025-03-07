@@ -2,6 +2,8 @@
 //!
 //! [action]: crate::cli::Action
 
+pub mod build_loader;
+
 use std::{error, fmt, io};
 
 /// A `cargo` profile.
