@@ -1,9 +1,15 @@
 //! Definitions of the supported `tvm` system configurations.
 
+use x86_64_pc::X86_64_PC;
+use x86_pc::X86_PC;
+
 use crate::{Arch, loader::Loader};
 
+pub mod x86_64_pc;
+pub mod x86_pc;
+
 /// List of all of the `tvm` system crates.
-pub static TVM_SYSTEMS: &[&TvmSystem] = &[];
+pub static TVM_SYSTEMS: &[&TvmSystem] = &[X86_PC, X86_64_PC];
 
 /// Returns the [`TvmSystem`] associated with the given [`Arch`].
 pub fn lookup(arch: Arch) -> Option<&'static TvmSystem> {
