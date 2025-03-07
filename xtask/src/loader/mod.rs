@@ -1,9 +1,15 @@
 //! Definitions of the supported `tvm_loader` system configurations.
 
+use x86_64_uefi::X86_64_UEFI;
+use x86_uefi::X86_UEFI;
+
 use crate::Arch;
 
+pub mod x86_64_uefi;
+pub mod x86_uefi;
+
 /// List of all of the `tvm_loader` system crates.
-pub static LOADERS: &[&Loader] = &[];
+pub static LOADERS: &[&Loader] = &[X86_UEFI, X86_64_UEFI];
 
 /// Returns the [`Loader`] associated with the given [`Arch`] and [`Platform`].
 pub fn lookup(arch: Arch, platform: Platform) -> Option<&'static Loader> {
